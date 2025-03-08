@@ -6,9 +6,9 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title='Prediction of Disease Outbreaks',
                    layout='wide',
                    page_icon="🧑‍⚕")
-diabetes_model= pickle.load(open(r"training_models\diabetes_model.sav",'rb'))
-heart_disease_model=pickle.load(open(r"training_models\heart_model.sav",'rb'))
-parkinsons_model= pickle.load(open(r"training_models\parkinsons_model.sav",'rb'))
+diabetes_model= pickle.load(open(r"training_models/diabetes_model.sav",'rb'))
+heart_disease_model=pickle.load(open(r"training_models/heart_model.sav",'rb'))
+parkinsons_model= pickle.load(open(r"training_models/parkinsons_model.sav",'rb'))
 
 with st.sidebar:
     selected= option_menu('Prediction of disease outbreak system',
