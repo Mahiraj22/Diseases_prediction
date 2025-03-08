@@ -5,8 +5,8 @@ from streamlit_option_menu import option_menu
 
 st.set_page_config(page_title='Prediction of Disease Outbreaks',
                    layout='wide',
-                   page_icon="🧑‍⚕️")
-diabetes_model= pickle.load(open(r"training_models\diabetes_model.sav",'rb'))
+                   page_icon="🧑‍⚕")
+diabetes_model= pickle.load(open(r"C:\Users\mahis\Desktop\predictions\training_models\diabetes_model.sav",'rb'))
 heart_disease_model=pickle.load(open(r"C:\Users\mahis\Desktop\predictions\training_models\heart_model.sav",'rb'))
 parkinsons_model= pickle.load(open(r"C:\Users\mahis\Desktop\predictions\training_models\parkinsons_model.sav",'rb'))
 
@@ -114,94 +114,93 @@ if selected == 'Heart Disease Prediction':
 # Load the trained model
 with open("training_models/parkinsons_model.sav", "rb") as file:
     parkinsons_model = pickle.load(file)
+if selected == 'Parkinsons prediction':
+    st.title("Parkinson’s Disease Prediction using ML")
 
-st.title("Parkinson’s Disease Prediction using ML")
+    # Ensure all variables are always defined
+    MDVP_Fo = MDVP_Fhi = MDVP_Flo = MDVP_Jitter_percent = MDVP_Jitter_Abs = ""
+    MDVP_RAP = MDVP_PPQ = Jitter_DDP = MDVP_Shim = MDVP_Shim_dB = ""
+    Shimmer_APQ3 = Shimmer_APQ5 = MDVP_APQ = Shimmer_DDA = ""
+    NHR = HNR = status = RPDE = DFA = spread1 = spread2 = D2 = PPE = ""
 
-# Ensure all variables are always defined
-MDVP_Fo = MDVP_Fhi = MDVP_Flo = MDVP_Jitter_percent = MDVP_Jitter_Abs = ""
-MDVP_RAP = MDVP_PPQ = Jitter_DDP = MDVP_Shim = MDVP_Shim_dB = ""
-Shimmer_APQ3 = Shimmer_APQ5 = MDVP_APQ = Shimmer_DDA = ""
-NHR = HNR = status = RPDE = DFA = spread1 = spread2 = D2 = PPE = ""
+    # Check if user selected Parkinson's Prediction
+    selected = st.sidebar.selectbox("Choose Prediction Type", ["Parkinsons prediction", "Other"])
+    if selected == "Parkinsons prediction":
+        # Creating three columns for input fields
+        col1, col2, col3 = st.columns(3)
 
-# Check if user selected Parkinson's Prediction
-selected = st.sidebar.selectbox("Choose Prediction Type", ["Parkinsons prediction", "Other"])
-if selected == "Parkinsons prediction":
-    # Creating three columns for input fields
-    col1, col2, col3 = st.columns(3)
+        with col1:
+            name = st.text_input('Name of the person')
+        with col2:
+            MDVP_Fo = st.text_input('MDVP:Fo(Hz)')
+        with col3:
+            MDVP_Fhi = st.text_input('MDVP:Fhi(Hz)')
+        with col1:
+            MDVP_Flo = st.text_input('MDVP:Flo(Hz)')
+        with col2:
+            MDVP_Jitter_percent = st.text_input('MDVP:Jitter(%)')
+        with col3:
+            MDVP_Jitter_Abs = st.text_input('MDVP:Jitter(Abs)')
+        with col1:
+            MDVP_RAP = st.text_input('MDVP:RAP')
+        with col2:
+            MDVP_PPQ = st.text_input('MDVP:PPQ')
+        with col3:
+            Jitter_DDP = st.text_input('Jitter:DDP')
+        with col1:
+            MDVP_Shim = st.text_input('MDVP:Shimmer')
+        with col2:
+            MDVP_Shim_dB = st.text_input('MDVP:Shimmer(dB)')
+        with col3:
+            Shimmer_APQ3 = st.text_input('Shimmer:APQ3')
+        with col1:
+            Shimmer_APQ5 = st.text_input('Shimmer:APQ5')
+        with col2:
+            MDVP_APQ = st.text_input('MDVP:APQ')
+        with col3:
+            Shimmer_DDA = st.text_input('Shimmer:DDA')
+        with col1:
+            NHR = st.text_input('NHR')
+        with col2:
+            HNR = st.text_input('HNR')
+        with col3:
+            status = st.text_input('Status')
+        with col1:
+            RPDE = st.text_input('RPDE')
+        with col2:
+            DFA = st.text_input('DFA')
+        with col3:
+            spread1 = st.text_input('spread1')
+        with col1:
+            spread2 = st.text_input('spread2')
+        with col2:
+            D2 = st.text_input('D2')
+        with col3:
+            PPE = st.text_input('PPE')
 
-    with col1:
-        name = st.text_input('Name of the person')
-    with col2:
-        MDVP_Fo = st.text_input('MDVP:Fo(Hz)')
-    with col3:
-        MDVP_Fhi = st.text_input('MDVP:Fhi(Hz)')
-    with col1:
-        MDVP_Flo = st.text_input('MDVP:Flo(Hz)')
-    with col2:
-        MDVP_Jitter_percent = st.text_input('MDVP:Jitter(%)')
-    with col3:
-        MDVP_Jitter_Abs = st.text_input('MDVP:Jitter(Abs)')
-    with col1:
-        MDVP_RAP = st.text_input('MDVP:RAP')
-    with col2:
-        MDVP_PPQ = st.text_input('MDVP:PPQ')
-    with col3:
-        Jitter_DDP = st.text_input('Jitter:DDP')
-    with col1:
-        MDVP_Shim = st.text_input('MDVP:Shimmer')
-    with col2:
-        MDVP_Shim_dB = st.text_input('MDVP:Shimmer(dB)')
-    with col3:
-        Shimmer_APQ3 = st.text_input('Shimmer:APQ3')
-    with col1:
-        Shimmer_APQ5 = st.text_input('Shimmer:APQ5')
-    with col2:
-        MDVP_APQ = st.text_input('MDVP:APQ')
-    with col3:
-        Shimmer_DDA = st.text_input('Shimmer:DDA')
-    with col1:
-        NHR = st.text_input('NHR')
-    with col2:
-        HNR = st.text_input('HNR')
-    with col3:
-        status = st.text_input('Status')
-    with col1:
-        RPDE = st.text_input('RPDE')
-    with col2:
-        DFA = st.text_input('DFA')
-    with col3:
-        spread1 = st.text_input('spread1')
-    with col1:
-        spread2 = st.text_input('spread2')
-    with col2:
-        D2 = st.text_input('D2')
-    with col3:
-        PPE = st.text_input('PPE')
+        # Placeholder for the prediction result
+        parkinsons_diagnosis = ""
 
-    # Placeholder for the prediction result
-    parkinsons_diagnosis = ""
+        if st.button("Parkinson’s Test Result"):
+            try:
+                # Convert inputs to float safely
+                user_input = [
+                    float(MDVP_Fo), float(MDVP_Fhi), float(MDVP_Flo), float(MDVP_Jitter_percent),
+                    float(MDVP_Jitter_Abs), float(MDVP_RAP), float(MDVP_PPQ), float(Jitter_DDP),
+                    float(MDVP_Shim), float(MDVP_Shim_dB), float(Shimmer_APQ3), float(Shimmer_APQ5),
+                    float(MDVP_APQ), float(Shimmer_DDA), float(NHR), float(HNR), float(status),
+                    float(RPDE), float(DFA), float(spread1), float(spread2), float(D2), float(PPE)
+                ]
+                
+                # Predict the result using the trained model
+                parkinsons_prediction = parkinsons_model.predict([user_input])
 
-    if st.button("Parkinson’s Test Result"):
-        try:
-            # Convert inputs to float safely
-            user_input = [
-                float(MDVP_Fo), float(MDVP_Fhi), float(MDVP_Flo), float(MDVP_Jitter_percent),
-                float(MDVP_Jitter_Abs), float(MDVP_RAP), float(MDVP_PPQ), float(Jitter_DDP),
-                float(MDVP_Shim), float(MDVP_Shim_dB), float(Shimmer_APQ3), float(Shimmer_APQ5),
-                float(MDVP_APQ), float(Shimmer_DDA), float(NHR), float(HNR), float(status),
-                float(RPDE), float(DFA), float(spread1), float(spread2), float(D2), float(PPE)
-            ]
-            
-            # Predict the result using the trained model
-            parkinsons_prediction = parkinsons_model.predict([user_input])
+                if parkinsons_prediction[0] == 1:
+                    parkinsons_diagnosis = "The person has Parkinson’s disease."
+                else:
+                    parkinsons_diagnosis = "The person does not have Parkinson’s disease."
 
-            if parkinsons_prediction[0] == 1:
-                parkinsons_diagnosis = "The person has Parkinson’s disease."
-            else:
-                parkinsons_diagnosis = "The person does not have Parkinson’s disease."
+                st.success(parkinsons_diagnosis)
 
-            st.success(parkinsons_diagnosis)
-
-        except ValueError:
-            st.error("Please enter valid numerical values for all input fields.")
- 
+            except ValueError:
+                st.error("Please enter valid numerical values for all input fields.")
