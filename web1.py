@@ -112,7 +112,7 @@ if selected == 'Heart Disease Prediction':
 
 
 # Load the trained model
-with open("parkinsons_model.sav", "rb") as file:
+with open("training_models/parkinsons_model.sav", "rb") as file:
     parkinsons_model = pickle.load(file)
 
 st.title("Parkinson’s Disease Prediction using ML")
