@@ -110,12 +110,25 @@ if selected == 'Heart Disease Prediction':
         st.success(heart_disease_diagnosis)
 
 
-if selected == 'Parkinsons Disease Prediction':
-    st.title('Parkinson’s Disease Prediction using ML')
-    
+
+# Load the trained model
+with open("parkinsons_model.sav", "rb") as file:
+    parkinsons_model = pickle.load(file)
+
+st.title("Parkinson’s Disease Prediction using ML")
+
+# Ensure all variables are always defined
+MDVP_Fo = MDVP_Fhi = MDVP_Flo = MDVP_Jitter_percent = MDVP_Jitter_Abs = ""
+MDVP_RAP = MDVP_PPQ = Jitter_DDP = MDVP_Shim = MDVP_Shim_dB = ""
+Shimmer_APQ3 = Shimmer_APQ5 = MDVP_APQ = Shimmer_DDA = ""
+NHR = HNR = status = RPDE = DFA = spread1 = spread2 = D2 = PPE = ""
+
+# Check if user selected Parkinson's Prediction
+selected = st.sidebar.selectbox("Choose Prediction Type", ["Parkinsons prediction", "Other"])
+if selected == "Parkinsons prediction":
     # Creating three columns for input fields
     col1, col2, col3 = st.columns(3)
-    
+
     with col1:
         name = st.text_input('Name of the person')
     with col2:
@@ -165,28 +178,30 @@ if selected == 'Parkinsons Disease Prediction':
     with col3:
         PPE = st.text_input('PPE')
 
-# Placeholder for the prediction result
-parkinsons_diagnosis = ''
+    # Placeholder for the prediction result
+    parkinsons_diagnosis = ""
 
-if st.button('Parkinson’s Test Result'):
-    user_input = [
-        MDVP_Fo, MDVP_Fhi, MDVP_Flo, MDVP_Jitter_percent, MDVP_Jitter_Abs, 
-        MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shim, MDVP_Shim_dB, Shimmer_APQ3, 
-        Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, status, RPDE, DFA, 
-        spread1, spread2, D2, PPE
-    ]
-    
-    # Convert the user inputs to float
-    user_input = [float(x) for x in user_input]
+    if st.button("Parkinson’s Test Result"):
+        try:
+            # Convert inputs to float safely
+            user_input = [
+                float(MDVP_Fo), float(MDVP_Fhi), float(MDVP_Flo), float(MDVP_Jitter_percent),
+                float(MDVP_Jitter_Abs), float(MDVP_RAP), float(MDVP_PPQ), float(Jitter_DDP),
+                float(MDVP_Shim), float(MDVP_Shim_dB), float(Shimmer_APQ3), float(Shimmer_APQ5),
+                float(MDVP_APQ), float(Shimmer_DDA), float(NHR), float(HNR), float(status),
+                float(RPDE), float(DFA), float(spread1), float(spread2), float(D2), float(PPE)
+            ]
+            
+            # Predict the result using the trained model
+            parkinsons_prediction = parkinsons_model.predict([user_input])
 
-    # Predict the result using the trained model
-    parkinsons_prediction = parkinsons_model.predict([user_input])
+            if parkinsons_prediction[0] == 1:
+                parkinsons_diagnosis = "The person has Parkinson’s disease."
+            else:
+                parkinsons_diagnosis = "The person does not have Parkinson’s disease."
 
-    if parkinsons_prediction[0] == 1:
-        parkinsons_diagnosis = 'The person has Parkinson’s disease.'
-    else:
-        parkinsons_diagnosis = 'The person does not have Parkinson’s disease.'
-    
-    # Show the result
-    st.success(parkinsons_diagnosis)
-    
+            st.success(parkinsons_diagnosis)
+
+        except ValueError:
+            st.error("Please enter valid numerical values for all input fields.")
+ 
